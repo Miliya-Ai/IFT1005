@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <title>Devoir 7</title>
+    <meta charset="UTF-8">
+    <style>
+      body{
+        background-color:#99CCAF;
+      }
+    </style>  
+</head>
+
+<body>
+
+  <!-- votre svg 2 ici (notez que vous devez remplacer hauteurIci, largeurIci, mettre des attributs a animateTransform et changer le path, etc.) Vous pouvez utiliser des path ou toute autre element SVG vous permettant de faire la forme.-->
+  <svg id="hourglass" viewbox="0 0 600 600" width="600" height="600"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <circle r="180" cx="300" cy="300" fill="none" stroke="rgb(217,255,254)" stroke-width="10" stroke-dasharray="80">
+    <animate
+        xlink:href="#hourglass"
+        attributeName="stroke-dashoffset"
+        from="600"
+        to="0" 
+        dur="1s"
+        repeatCount="indefinite"
+    />
+    <animate 
+        xlink:href="#hourglass"
+        attributeName="stroke"
+        values="rgb(28,255,255),rgb(217,255,254),rgb(28,255,255)"
+        keyTimes="0;0.5;1"
+        repeatCount="indefinite"
+    />
+    </circle>
+    </svg> 
+</body>
+
+</html>

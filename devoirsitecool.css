@@ -1,0 +1,258 @@
+body{
+    background-image: url(https://media4.giphy.com/media/SwIMZUJE3ZPpHAfTC4/giphy.gif?cid=ecf05e47l7929faalpgz8onqdyksf2t9blv5ohpjiwvpfq6t&rid=giphy.gif&ct=g);
+    background-repeat:repeat;
+    background-attachment: fixed;
+    background-size: 50%;   
+  }
+
+  h1{
+    background-color: rgb(229, 242, 247);
+    border-color: rgb(135, 226, 143);
+    color: #99c281;
+    text-align: center;
+    margin: 50px;
+    border-style:ridge;
+    border-width: thick;
+    font-style:italic;
+  }
+  
+  h2 {
+    color: #9bdbab;
+    text-align: center;
+    margin: 50px;
+    border-style:solid;
+    border-width: thick;
+    font-style:italic;   
+  }
+
+  #color-anim {
+    color: rgb(128, 223, 236);
+    transition: color 0.5s ease-out;
+  }
+  #color-anim:hover {
+    color: rgb(29, 53, 105);
+  }
+  #fistdiv{
+    width: 1150px;
+    height: 500px;
+    margin-right:10px;
+    margin-left:50px;
+    border:solid 5px rgb(118, 166, 194);
+    animation: colorchange 5s infinite;
+}
+
+@keyframes colorchange {
+    50% {border-color:rgb(34, 44, 190) ;}
+}
+  
+  /* definition de l'animation */ 
+@keyframes gradientcool {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  #bg-anim {
+    color: aliceblue;
+    background: linear-gradient(-45deg, #b4634ad0, #9b4b6ad3, #4ea3c298, #4dc0a5a2);
+    background-size: 400% 400%;
+      /* appel de l'animation "gradientcool" */
+    animation: gradientcool 5s ease infinite;
+  }
+
+  #Gif {
+    margin-left: 50px;
+    margin-right: 50px;
+    order: 1;
+    width: 5%;
+  }
+
+  h3 {
+    color: #e9f1eb;
+    text-align: center;
+    font-style:unset
+  }
+
+#translate-anim {
+    transition: transform 1s ease-in-out;
+}
+#translate-anim:hover {
+    transform: translate(400px,0);
+}
+
+@keyframes changerImages {
+    0% {
+      content: url("https://i.imgur.com/6Bht9TL.jpeg");
+      border-radius: 15px;
+      width: 35%;
+      height: 300px;
+    }
+    25% {
+      content: url("https://i.imgur.com/xBntSnV.jpeg");
+      border-radius: 50px;
+      width: 35%;
+      height: 300px;
+    }
+    50% {
+      content: url("https://i.imgur.com/XHT0AQF.jpeg");
+      border-radius: 125px;
+      width: 35%;
+      height: 300px;
+    }
+    75% {
+      content: url("https://i.imgur.com/naZexLl.jpeg");
+      border-radius: 50px;
+      width: 35%;
+      height: 300px;
+    }
+    100% {
+      content: url("https://i.imgur.com/qzGSUYW.jpeg");
+      border-radius: 15px;
+      width: 35%;
+      height: 300px;
+    }
+  }
+  
+  #pictures {
+    animation: changerImages 10s infinite;
+    order: 1;
+    margin: 50px;
+  }
+
+  #rangees {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+  }
+  
+  #size-anim {
+    font-size: 20px;
+    transition: font-size 0.5s ease-out;
+  }
+  #size-anim:hover {
+    font-size: 59px;
+  }
+
+  #play {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  #play > div.word{
+    width: 50%;
+    order: 2;
+  }
+
+  @keyframes ChangerImages {
+    0% {
+      content: url("https://i.imgur.com/ZvYqmGx.jpg");
+      border-radius: 15px;
+      width: 400px;
+      height: 420px;
+    }
+    50% {
+      content: url("https://i.imgur.com/CFsQcN9.jpg");
+      border-radius: 125px;
+      width: 400px;
+      height: 420px;
+    }
+    100% {
+      content: url("https://i.imgur.com/owgPSO1.jpg");
+      border-radius: 15px;
+      width: 400px;
+      height: 420px;
+    }
+  }
+
+  #rose {
+    animation: ChangerImages 10s infinite;
+    margin: 50px;
+    order: 3;
+  } 
+
+  .lds-heart {
+    display: inline-block;
+    width: 300%;
+    height: 300%;
+    transform: rotate(45deg);
+    transform-origin: 40px 40px;
+    size: 600px;
+  }
+  .lds-heart div {
+    top: 32px;
+    left: 32px;
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background: #fdd;
+    animation: lds-heart 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  .lds-heart div:after,
+  .lds-heart div:before {
+    content: " ";
+    position: absolute;
+    display: block;
+    width: 32px;
+    height: 32px;
+    background: #fdd;
+  }
+  .lds-heart div:before {
+    left: -24px;
+    border-radius: 50% 0 0 50%;
+  }
+  .lds-heart div:after {
+    top: -24px;
+    border-radius: 50% 50% 0 0;
+  }
+  @keyframes lds-heart {
+    0% {
+      transform: scale(0.95);
+    }
+    5% {
+      transform: scale(1.1);
+    }
+    39% {
+      transform: scale(0.85);
+    }
+    45% {
+      transform: scale(1);
+    }
+    60% {
+      transform: scale(0.95);
+    }
+    100% {
+      transform: scale(0.9);
+    }
+  }
+
+  #little,#lover,#rose{
+    width: 20%;
+    height: 20vw;
+    flex-direction:row;
+    margin:auto;
+    flex-direction: row
+  }
+
+  #lover{
+    content: url(https://media3.giphy.com/media/bmazWD8JIaAFO/giphy.gif?cid=ecf05e47hf2lnde58ncvnm0fhzsqjc9yahhdukwul5a8p4hm&rid=giphy.gif&ct=g);
+     width:50%;
+     height:30%
+  }
+  
+  #little{
+    content: url(https://media1.giphy.com/media/WQ6ZZhPKa1iQ8/giphy.gif?cid=ecf05e47556t2o7my3g0hywkjo8sqm8k2hkn2k35bwfcckv5&rid=giphy.gif&ct=g);
+     width:50%;
+     height:30%
+  }
+
+  .hinthint-flexflex{ 
+    display: flex;
+  }
+
+  

@@ -1,0 +1,154 @@
+/* NE PAS ENLEVER  NE PAS ENLEVER  NE PAS ENLEVER  NE PAS ENLEVER  NE PAS ENLEVER  NE PAS ENLEVER  NE PAS ENLEVER  NE PAS ENLEVER  NE PAS ENLEVER  NE PAS ENLEVER */
+
+* {
+  box-sizing: border-box;
+  background-size: cover;
+}
+
+body {
+  margin: 0px;
+  height: 100vh;
+  text-align: justify;
+}
+
+/* [OPTIONNEL] REGARDEZ CECI ET UTILISEZ LES PROPRIETES SUIVANTES SI VOS IMAGES DEBORDENT DE PARTOUT (cette classe-ci n'existe pas dans le html, donc vous devez copier et coller les proprietes width et height ci-dessous pour les utiliser sur vos images) */
+.RECOMMENDATION-DE-PROPRIETES-DE-GRANDEUR-POUR-SI-VOUS-METTEZ-DES-IMAGES-QUI-SONT-TROP-GRANDES{
+  width: 20%;
+  height: 20vw;
+}
+
+/* Votre code en dessous ce ceci :)*/
+
+#principal{
+  color:blueviolet;
+  border:1px 2px 2px rgba(98,171,179,0.69)
+}
+
+#secondaire{
+  color: green;
+  border: 1px 2px 2px rgba(240,240,17,0.69)
+}
+
+#menu{
+  color: blue;
+  border: 1px 2px 2px rgba(179,37,169,0.69)
+}
+
+#image-a {
+  content: url('https://i.pinimg.com/736x/c1/8e/88/c18e88be7d3d037fab583cf9f19a3c50--spongebob-squarepants-cartoons-body-weight.jpg');
+}
+
+#image-b {
+  content: url('https://i1.sndcdn.com/artworks-KSzxSeEvgAptMtJ8-HBah4w-t500x500.jpg');
+}
+
+#image-c {
+  content: url('https://wallpapers-clan.com/wp-content/uploads/2021/03/spongebob-fish-drinking-soda-meme-wallpaper-scaled.jpg');
+}
+
+#image-d {
+  content: url('https://yt3.ggpht.com/gcD1KWmeF3E3XMZDbj7x_5uL-bO0mJuROcZPTFzfXOLyveFfzYk46t_n3UT7iVDDJ6ekefP8=s900-c-k-c0x00ffffff-no-rj');
+}
+
+#image-e {
+  content: url('https://i1.sndcdn.com/artworks-000540368046-8nn1wy-t500x500.jpg');
+}
+
+#image-a, #image-b {
+  width: 20%;
+  height: 15vw;
+  display: flex;
+  flex-direction: row
+}
+
+#image-c ,#image-d ,#image-e {
+  background-color: #f1f1f1;
+  width: 20%;
+  height: 20vw;
+  margin:auto;
+  flex-direction: row
+}
+
+.hinthint-flexflex{
+  display: flex;
+}
+
+div.section-header  h1 {
+  flex-basis: 100%;
+  text-align: center
+}
+
+div.deuxieme-container  h1 {
+  flex-basis: 100%;
+  text-align: center
+}
+
+div.section-header  P {
+  flex: 2;
+  padding: 1vw;
+}
+
+.autre-texte {
+  width: 100%;
+  max-height: 10vw;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+.container {
+  margin:  2vw 20vw 2vw 3vw;
+  padding: 3vw;
+  width: 90%;
+  border: 1px solid white;
+  border-radius: 15px;
+}
+
+#menu{
+  background-color: rgba(180,243,247,0.69);
+}
+
+#secondaire{
+  background-color: rgba(190,247,190,0.69);
+}
+
+#principal{
+  background-color: rgba(241,222,247,0.69);
+}
+
+h1{
+  font-family: Copperplate, Papyrus, fantasy;
+}
+
+.paragraphe-particulier {
+  box-shadow: 2px 2px 7px 1px rgba(247,124,247,0.69);
+  font-style: italic;
+}
+
+#yuuum {
+  font-family: 'Brush Script MT',cursive;
+}
+
+body {
+  background-image: url(https://images-na.ssl-images-amazon.com/images/S/pv-target-images/d7e724737a882a3017e4f3ea32a38cbd51793f84ebecf25b8d70aee365dff51a._RI_V_TTW_.jpg),
+                    url("https://wallpapercave.com/wp/acy6hc1.jpg");
+  background-repeat:repeat-x,repeat;
+  background-attachment: fixed;
+  background-position: right, left;
+  background-size: 50%,50%;
+}
+
+div p{
+  font-size: 1.1em
+}
+
+span.paragraphe-particulier{
+  font-size: 1.2em
+}
+
+div.section-speciale > p{
+  font-style:oblique;
+}

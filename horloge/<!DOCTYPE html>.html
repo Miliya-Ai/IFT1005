@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>IFT 1005 - Calendrier - Test de l'API</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+    <script>
+
+function traiteCalendrier(calendrier) {
+    var now=Math.round(Date.now()/1000); // a la seconde pres
+    var e=document.getElementById("maintenant");
+    var ds=new Date(now*1000).toLocaleString();
+    e.innerHTML=now+" ("+ds+")"; // a la seconde
+
+    if( typeof(calendrier)=="undefined")  return;
+
+    var e=document.getElementById("lecal");
+
+    var info="";
+    for(var i=0;i<calendrier.length;i++) {
+        var c=calendrier[i];
+        // pour chaque message...
+        var actif=(c.debut<now && now<c.fin);
+        var x=(c.debut-now);
+        var y=(c.fin-now);
+        info+=i+": De "+c.debut+" a "+c.fin+" : "+c.message;
+        if( x>0 ) info+=" (dans "+x+" sec)";
+        if( actif ) info+=" (ACTIF! Il reste "+y+" sec)";
+        if( now>c.fin ) info+=" (inactif)";
+        info+="<br/>";
+    }
+    e.innerHTML=info;
+}
+
+var cal;  //  le  calendrier
+
+function lireCalendrier()  {
+    console.log("clic!");
+    const req = new XMLHttpRequest();
+    const url='http://www.iro.umontreal.ca/~roys/ift1005/calendrier/test.php?cal=now%2C%2B30sec%2Cbonjour%0D%0A%2B2min%2C%2B5min%2Csalut%2C!%0D%0A%2B1hour%2C%2B30sec%2Callo%0D%0A';
+
+    // pour afficher l'url
+    var e=document.getElementById("monurl");
+    e.innerHTML=url;
+    e.setAttribute("href",url);
+    
+    req.open("GET", url);
+    req.send();
+    req.onreadystatechange = function() {
+        if( this.readyState!=4 ) return;
+        if( this.status==200 )  {
+            //succes!
+            cal=JSON.parse(this.responseText);
+            traiteCalendrier(cal);
+        }else{
+            console.log("Probleme!!!");
+        }
+    };
+}
+
+
+window.onload=function ()  {
+    setInterval(function() { traiteCalendrier(cal); },1000);
+}
+
+
+    </script>
+
+</head>
+<body>
+<h1>Calendrier</h1>
+
+<p>Cet exemple va aller chercher le calendrier des messages et afficher le  contenu.</p>
+<p>URL utilisé pour  le JSON: <code><a id="monurl"></a></code> </p>
+<p>Pour l' horloge, on doit  comparer les heures des messages avec l'heure actuelle...</p>
+
+<div id="ici" style="background-color:pink;padding:10px;margin:10px;">
+    <p>Il est <span id="maintenant">???</span></p>
+    <p id="lecal"></p>
+</div>
+
+<button onclick="lireCalendrier();">Lire le  calendrier!</button>
+
+</body>
+
+
+</html>
+

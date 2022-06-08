@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <title>TP.1 Horloge</title>
+        <script>
+        function traiteCalendrier(calendrier) {
+            var now=Math.round(Date.now()/1000); // a la seconde pres
+            var e=document.getElementById("maintenant");
+            var ds=new Date(now*1000).toLocaleString();
+            e.innerHTML=now+" ("+ds+")"; // a la seconde
+
+            if( typeof(calendrier)=="undefined")  return;
+
+            var e=document.getElementById("lecal");
+
+            var info="";
+            for(var i=0;i<calendrier.length;i++) {
+            var c=calendrier[i];
+            // pour chaque message...
+            var actif=(c.debut<now && now<c.fin);
+            var x=(c.debut-now);
+            var y=(c.fin-now);
+            info+=i+": De "+c.debut+" a "+c.fin+" : "+c.message;
+            if( x>0 ) info+=" (dans "+x+" sec)";
+            if( actif ) info+=" (ACTIF! Il reste "+y+" sec)";
+            if( now>c.fin ) info+=" (inactif)";
+            info+="<br/>";
+            }
+            e.innerHTML=info;
+        }       
+
+        var cal;  //  le  calendrier
+
+        function lireCalendrier()  {
+            console.log("clic!");
+            const req = new XMLHttpRequest();
+            const href="horloge/calendrier.json";
+
+            // pour afficher l'url
+            var e=document.getElementById("monurl");
+            e.innerHTML=url;
+            e.setAttribute("href",url);
+    
+            req.open("GET", url);
+            req.send();
+            req.onreadystatechange = function() {
+                if( this.readyState!=4 ) return;
+                if( this.status==200 )  {
+                    //succes!
+                    cal=JSON.parse(this.responseText);
+                    traiteCalendrier(cal);
+                }else{
+                    console.log("Probleme!!!");
+                }
+            };
+        }
+
+        window.onload=function ()  {
+            setInterval(function() { traiteCalendrier(cal); },1000);
+        }
+    </script>
+    </head>
+    <style>
+    svg { background-color:none; }
+    #monhorloge {background-color: yellow;}
+    #maDescription{background-color: lightblue;}
+    div{display: inline-block;}
+    div{margin:15px;}
+    p{font-size:35px;}
+    h1{font-size: 60px;}
+    #extra{background-color: lightgreen;}
+    #rec3{background-color:red;}
+    #message{opacity: 0.7;}
+    </style>
+
+    <body>
+        <h1>Projet Horloge SVG 24h</h1>
+        <p>
+          Membres de l'équipe: Faiza Abboud et Miliya Ai
+        </p>
+
+
+        <!-- à changer -->
+        <!-- <p><button onclick="meteo();">LIRE LA MÉTÉO</button></p> -->
+
+
+      <div>
+        <!-- viewBox -->
+        <svg id="monhorloge"  viewBox="0  0 400 400" width="1000" height="1000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <!-- <defs>
+            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color=rgb(255,255,0) />
+              <stop offset="100%" stop-color=rgb(255,0,0) />
+           </linearGradient>
+         </defs> -->
+          <!-- mon horloge -->
+            <circle id="idCercle" cx="50%" cy="50%" r="190" fill="white" opacity="1" stroke="lightblue" stroke-width="10"/>
+
+            <!-- <rect x="150" y="80" width="108" height="110" fill="none" stroke="black"/> -->
+            <text id="rectHeure" x="162" y="110" fill="black" style="font-size: medium;"></text>
+            <text id="rectDate" x="162" y="150" fill="black" style="font-size: medium;"></text>
+
+
+            <!-- <rect x="150" y="200" width="140" height="120" fill="none" stroke="black"/> -->
+            <text id="rise" x="156" y="250" fill="black" style="font-size: medium;">sunrise</text>
+            <text id="set" x="156" y="300" fill="black" style="font-size: medium;">sunset</text>
+
+
+
+            <!-- aigue -->
+            <path id="aig" d="M 185 200 L 215 200  L 200 100 z" fill="lightblue" stroke="none" transform="rotate(180 200 200)" opacity="0.5">
+
+              <!-- animation aigue -->
+            <animateTransform
+                attributeName="transform"
+                attributeType="XML"
+                type="rotate"
+                from="0 200 200"
+                to="360 200 200"
+                dur="60s"
+                repeatCount="indefinite"
+         />
+       </path>
+
+       <g>
+        <path id="cheminCercle" stroke="lightblue" stroke-width="6" fill="none"
+              d = "M 60,30 C 130,10 200,100 260,30 S 200,130 370,80"/>
+        <text style="font:18px sans-serif;" >
+            <textPath href="#cheminCercle" startOffset="0"> Rappel: rdv a 16h
+                  <animate attributeName="startOffset" values="0%; 100%; 0%:" dur="7s" repeatCount="indefinite"></animate>
+            </textPath>
+        </text>
+        </g>
+        
+                 <circle id="whitemoon" cx="290" cy="200" r="25" fill="#e0cda9" />
+                 <circle id="greymoon" cx="200" cy="100" r="20" fill="grey" fill-opacity="0.25"
+                      filter="url(#filter-greymoon)" />
+                 <ellipse id="cloudback" cx="100" cy="130" rx="180" ry="50" fill="white" fill-opacity="0.95"
+                     filter="url(#blur-cloud)" />
+                 <ellipse id="cloudmid" cx="260" cy="140" rx="140" ry="30" fill="#9EA8B3" fill-opacity="0.5"
+                     filter="url(#blur-cloud)" />
+                 <ellipse id="cloudfront" cx="260" cy="160" rx="100" ry="20" fill="black" fill-opacity="0.2"
+                     filter="url(#blur-cloud)" />
+                 <filter id="blur-moon">
+                 <feGaussianBlur in="SourceGraphic" stdDeviation="3" />
+                </filter>
+            <g id="moon">
+            <use xlink:href="#whitemoon" />
+            <use xlink:href="#whitemoon" filter="url(#blur-moon)" />
+            <use xlink:href="#greymoon" filter="url(#blur-greymoon)" />
+            </g>
+            <g>
+            <circle id="fill-circle" r="25" cx="290" cy="200" fill="white" />
+            
+            
+            <animateTransform
+              xlink:href="#fill-circle"
+              attributeName="transform"
+              type="translate"
+              begin="0"
+              values="55 1; -55 1; 55 1"
+              keyTimes="0;0.5;1"
+              dur="100s"
+              repeatCount="indefinite" />
+            </g>
+
+            <g>
+                <circle id="whitemoon1" cx="30" cy="200" r="25" fill="#e0cda9" />
+                <circle id="greymoon1" cx="30" cy="100" r="20" fill="grey" fill-opacity="0.25" filter="url(#filter-greymoon1)" />
+                <ellipse id="cloudback1" cx="100" cy="130" rx="180" ry="50" fill="white" fill-opacity="0.95" filter="url(#blur-cloud1)" />
+                <ellipse id="cloudmid1" cx="260" cy="140" rx="140" ry="30" fill="#9EA8B3" fill-opacity="0.5" filter="url(#blur-cloud1)" />
+                <ellipse id="cloudfront1" cx="260" cy="160" rx="100" ry="20" fill="black" fill-opacity="0.2" filter="url(#blur-cloud1)" />
+                <filter id="blur-moon1">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="3" />
+                </filter>
+                <g id="moon1">
+                <use xlink:href="#whitemoon1" />
+                <use xlink:href="#whitemoon1" filter="url(#blur-moon1)" />
+                <use xlink:href="#greymoon1" filter="url(#blur-greymoon1)" />
+                </g>
+
+                <ellipse  cx="15" cy="200" rx="20" ry="25"fill="white" />
+                <animatemotion path="M 10 1 q 200 -300 400 0" begin="0s" dur="10s" repeatcount="indefinite"/>
+            </g>
+
+            <svg witdth = "600" height="800">
+                <defs>
+                    <linearGradient id="grad1" x1="0%" yl="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:rgb(255,255,0);stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity: 1" /> 
+                    </linearGradient>
+                </defs>
+                <circle cx="100" cy="100" r="30" stroke="orange" fill="url(#grad1)"/>
+                
+                <g>
+                    <line x1="100" yl="10" x2="100" y2="60" style="stroke: orange"/> 
+                    <line x1="1" y1="100" x2="60" y2="100" style="stroke: orange"/> 
+                    <line x1="140" y1="100" x2="200" y2="100" style="stroke: orange"/> 
+                    <line x1="100" y1="140" x2="100" y2="200" style="stroke: orange"/> 
+                    <line x1="10" y1="10" x2="60" y2="70" style="stroke: orange"/> 
+                    <line x1="140" y1="140" x2="180" y2="180" style="stroke: orange"/> 
+                    <line x1="180" yl="20" x2="140" y2="60" style="stroke: orange"/> 
+                    <line x1="20" y1="180" x2="70" y2="140" style="stroke: orange"/>
+                </g>
+        
+                <animatemotion path="m20,200 q160,180 360, 30" begin="0s" dur="10s" rotate="auto" repeatcount="indefinite"/>
+               
+                
+            </svg>
+
+     <circle  cx="200" cy="200" r="15"  fill="lightblue"/>
+
+
+     <!-- Les chiffres -->
+        <g id="heures">
+            <!-- <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="rotate"
+            from="0 200 200"
+            to="360 100 200"
+            dur="5s"
+            repeatCount="indefinite"
+            /> -->
+        </g>
+
+
+
+
+        <!-- ronds de météo -->
+        <g id='meteo1'>
+        </g>
+
+   </svg>
+ </div>
+
+ <div>
+    <svg id="maDescription"  viewBox="0  0 400 400" width="1000" height="1000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <text x="70" y="30" fill="#06329f" style="font-size: xx-large;">Horloge Extra Time</text>
+        <text x="30" y="70" fill="white" style="font-size: medium;">Cette horloge extra précision vous offre
+            le temps à </text>
+        <text x="36" y="95" fill="white" style="font-size: medium;"> la seconde près avec tout un kit date, température </text>
+        <text x="36" y="120" fill="white" style="font-size: medium;"> et phase de la Lune.</text>
+        <text x="36" y="155" fill="white" style="font-size: large;"> Légende:</text>
+
+        <!-- chaud -->
+        <circle cx="50" cy="180" r="6" fill="red"/>
+        <text x="65" y="185" fill="white">Chaud</text>
+
+        <!-- froid -->
+        <circle cx="50" cy="210" r="6" fill="blue"/>
+        <text x="65" y="215" fill="white">Froid</text>
+
+        <!-- tiéde -->
+        <circle cx="50" cy="240" r="6" fill="purple"/>
+        <text x="65" y="245" fill="white">Tiède</text>    
+
+    </svg>
+
+
+</div>
+
+
+
+
+<div>
+    <svg id="extra"  viewBox="0  60 400 400" width="750" height="1000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <!-- <rect id="rec3" x="24" width="350" height="160" fill="white" stroke="lightblue" stroke-width="2"/> -->
+        <!-- <path id="chemin" stroke="lightblue" stroke-width="6" fill="none" -->
+              <!-- d = "M 60,30 C 130,10 200,100 260,30 S 200,130 370,80"/> -->
+        <!-- <text id="message"style="font:24px sans-serif;" >
+            <textPath href="#idCercle"> Rappel: rdv a 16h
+
+                  <animate attributeName="startOffset"
+                      values="0%; 100%; 0%:" dur="5s"
+                      repeatCount="indefinite"></animate>
+
+            </textPath>
+        </text> -->
+                <circle  cx="200" cy="200" r="10"  fill="red"/>
+                     <!-- Phrase de lune -->
+
+                    <!-- <circle id="whitemoon" cx="200" cy="100" r="20" fill="#e0cda9" />
+                    <circle id="greymoon" cx="200" cy="100" r="20" fill="grey" fill-opacity="0.25"
+                         filter="url(#filter-greymoon)" />
+                    <ellipse id="cloudback" cx="100" cy="130" rx="180" ry="50" fill="white" fill-opacity="0.95"
+                        filter="url(#blur-cloud)" />
+                    <ellipse id="cloudmid" cx="260" cy="140" rx="140" ry="30" fill="#9EA8B3" fill-opacity="0.5"
+                        filter="url(#blur-cloud)" />
+                    <ellipse id="cloudfront" cx="260" cy="160" rx="100" ry="20" fill="black" fill-opacity="0.2"
+                        filter="url(#blur-cloud)" />
+                    <filter id="blur-moon">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="3" />
+                </filter>
+          <g id="moon">
+            <use xlink:href="#whitemoon" />
+            <use xlink:href="#whitemoon" filter="url(#blur-moon)" />
+            <use xlink:href="#greymoon" filter="url(#blur-greymoon)" />
+          </g>
+          <g>
+          <circle id="fill-circle" r="20" cx="250" cy="100" fill="white" />
+
+          <animate
+                 xlink:href="#fill-circle"
+                 attributeName="cx"
+                 from="250"
+                 to="200"
+                 dur="3s"
+                 fill="freeze" />
+          </g> -->
+
+  </svg>
+</div>
+
+<p>URL utilisé pour  le JSON: <code><a id="monurl"></a></code> </p>
+<p>Pour l' horloge, on doit  comparer les heures des messages avec l'heure actuelle...</p>
+
+<div id="ici" style="background-color:pink;padding:10px;margin:10px;">
+    <p>Il est <span id="maintenant">???</span></p>
+    <p id="lecal"></p>
+</div>
+
+<button onclick="lireCalendrier();">Lire le  calendrier!</button>
+
+
+<!-- !!!!!!!!!!!!!!! -->
+
+
+      <script>
+
+        // déclaration de variable
+        var svg=document.getElementById("monhorloge");
+        var ai=document.getElementById("aig1");
+        var gHeures=document.getElementById("heures");
+        var gMeteo=document.getElementById("meteo1")
+        var h=0;
+
+
+        // les chiffres de l'horloge
+        function  txt(texte,rot)  {
+            var e = document.createElementNS("http://www.w3.org/2000/svg", 'text');
+            e.setAttribute("x",200);
+            e.setAttribute("y",35);
+            e.setAttribute("fill","orange");
+            e.setAttribute("style","text-anchor:middle; font-family: serif font-weight: bold; font-size:15px;");
+            e.setAttribute("transform","rotate("+rot+" 200 200)");
+            var textNode = document.createTextNode(texte);
+            e.appendChild(textNode);
+            gHeures.appendChild(e);
+        }
+
+
+
+
+
+        // les ronds de la meteo
+        function meteoDot(rot,id) {
+            var e = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+            e.setAttribute("id",id);
+            e.setAttribute("cx","350");
+            e.setAttribute("cy","200");
+            e.setAttribute("r","5");
+            e.setAttribute("transform","rotate(+"+rot+" 200 200)");
+            e.setAttribute("fill","none");
+            e.setAttribute("stroke","none");
+            gMeteo.appendChild(e);
+            return(e);
+        }
+
+
+
+        // animation de l'aigue
+        function ajuste()  {
+            ai.setAttribute("transform","rotate("+h+" 200 200)");
+            h=h+10.0;
+        };
+
+
+
+        // tableau de couleur température
+        var meteoTab = [];
+
+        for(var i=0; i<24; i++) meteoTab[i] = meteoDot(i*360/24,i);
+
+
+
+// afficher la temperature
+
+        function meteo(){
+
+            var  url="https://api.openweathermap.org/data/2.5/onecall?lat=45,50&lon=-73,56&appid=f1b8f3a04ab20cd6326a2e4ddfd2c8d3"
+
+            var req = new XMLHttpRequest();
+            req.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var jmeteo = JSON.parse(this.responseText);
+                    // traiteMeteo(jmeteo);
+                    var h = jmeteo.hourly;
+                    var tmin = 9999
+                    var tmax = -9999
+                    for (var i = 0; i<24; i++){
+                      if(h[i].temp>tmax) tmax=h[i].temp;
+                      if(h[i].temp<tmin) tmin=h[i].temp;
+                      var f =(h[i].temp - tmin) / (tmax - tmin); // entre 0 et 1
+                      // var meteoTab = [];
+                      meteoTab[i].setAttribute ("fill","rgb("+(f*255)+",0,"+(255-f*255)+")");
+                  }
+
+                    for (var i = 0; i<24; i++){
+                      var f =(h[i].temp - tmin) / (tmax - tmin); // entre 0 et 1
+                      meteoTab[i].setAttribute ("fill","rgb("+(f*255)+",0,"+(255-f*255)+")");
+                    }
+
+                }
+          };
+
+
+
+
+
+          // aller chercher l'url avec un get
+          req.open("GET", url, true);
+          req.send();
+    }
+   meteo()
+
+   function levee(){
+
+        var  url="https://api.openweathermap.org/data/2.5/onecall?lat=33,44&lon=-94,04&appid=f1b8f3a04ab20cd6326a2e4ddfd2c8d3"
+
+        var req = new XMLHttpRequest();
+        req.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var jmeteo = JSON.parse(this.responseText);
+
+                var unixSunrise=jmeteo.daily[0].sunrise;
+                // var sunset=jmeteo.daily[0].sunset;
+                // console.log(unixSunrise);
+                var sunrise = new Date(unixSunrise *1000);
+                var hours = sunrise.getHours();
+                var minutes = "0" + sunrise.getMinutes();
+                var seconds = "0" + sunrise.getSeconds();
+
+
+                var nouveauRise = hours + ":" + minutes.substr(-2) + ":" + seconds.substr(-2);
+
+                var sRise = document.getElementById("rise");
+                // var sSet = document.getElementById("set");
+
+                sRise.innerHTML = "Rise:" + " "+nouveauRise + " " + "AM";
+
+           }
+        }
+     req.open("GET", url, true);
+     req.send();
+
+}
+levee();
+
+
+
+function couche(){
+
+     var  url="https://api.openweathermap.org/data/2.5/onecall?lat=33,44&lon=-94,04&appid=f1b8f3a04ab20cd6326a2e4ddfd2c8d3"
+
+     var req = new XMLHttpRequest();
+     req.onreadystatechange = function() {
+         if (this.readyState == 4 && this.status == 200) {
+             var jmeteo = JSON.parse(this.responseText);
+
+             var unixSet=jmeteo.daily[0].sunset;
+             // var sunset=jmeteo.daily[0].sunset;
+             // console.log(unixSunrise);
+             var sunset = new Date(unixSet *1000);
+             var hours = sunset.getHours();
+             var minutes = "0" + sunset.getMinutes();
+             var seconds = "0" + sunset.getSeconds();
+
+
+             var nouveauSet = hours + ":" + minutes.substr(-2) + ":" + seconds.substr(-2);
+
+             var sSet = document.getElementById("set");
+             // var sSet = document.getElementById("set");
+
+             sSet.innerHTML = "Set:" + " "+ nouveauSet +" " + "PM";
+
+        }
+     }
+  req.open("GET", url, true);
+  req.send();
+
+}
+couche();
+
+
+    // afficher les numéros d'heures
+    setInterval(ajuste,1000);
+    for(var i=0;i<24;i++) txt(""+i,i*360/24);
+
+
+
+    function temps(){
+      var date = new Date();
+        var heureDate = date.getHours();
+        var minuteDate = date.getMinutes();
+        var secondeDate = date.getSeconds();
+        var afficheLheure = document.getElementById("rectHeure");
+
+
+        if(heureDate < 10){
+            heureDate = "0" + heureDate;
+        }
+
+        if(minuteDate < 10){
+            minuteDate = "0" + minuteDate;
+        }
+        if(secondeDate < 10){
+            secondeDate = "0" + secondeDate;
+        }
+
+        var ordreTemps = heureDate + ":" + minuteDate + ":" + secondeDate + " ";
+
+        if(heureDate >= 12){
+            ordreTemps = ordreTemps +"PM";
+        }
+        else{
+            ordreTemps = ordreTemps +"AM";
+        }
+
+        afficheLheure.innerHTML = ordreTemps;
+        setTimeout(temps,1000);
+
+
+    }
+
+temps();
+
+
+
+
+  function date() {
+       var date = new Date();
+       var annee = date.getFullYear();
+       var mois = date.getMonth();
+       var tabMois = ["janvier","février", "mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"]
+       var MOIS = tabMois[mois]
+       var jour = date.getDate();
+       var afficheDate = document.getElementById("rectDate");
+
+       afficheDate.innerHTML = jour + " " + MOIS + " " + annee;
+       setTimeout(date,10);
+    }
+    date();
+
+
+
+// !!!!!!!!!!!!!!!!!
+
+
+        //     // affiche temperatures min et max
+        //     document.getElementById("mintemp").innerHTML=""+tmin;
+        //     document.getElementById("maxtemp").innerHTML=""+tmax;
+        //
+        //
+        //     // sunrise et sunet
+        //     var sunrise=jm.daily[0].sunrise;
+        //     var sunset=jm.daily[0].sunset;
+        //     }
+        //
+        //
+        //     // pas sur c'est quoi
+        //     setInterval(ajuste,1000);
+        //     for(var i=1;i<25;i++) txt(""+i,i*360/24);
+        //
+        //
+        // }
+
+
+
+        // traitement de la météo
+        // function traiteMeteo(){
+
+        //   var h = jm.hourly;
+        //   var tmin = -10000
+        //   var tmax = 10000
+        //
+        //
+        //
+        //   for (var i = 0; i<24; i++){
+        //   var f =(h[i].temp - tmin) / (tmax - tmin); // entre 0 et 1
+        //
+        //   var meteoTab = [];
+        //   meteoTab[i].setAttribute ("fill","rgb("+(f*255)+",0,"+(255-f*255)+")");
+        //   };
+        //
+
+        //
+        //   // sunrise et sunet
+        //   var sunrise=jm.daily[0].sunrise;
+        //   var sunset=jm.daily[0].sunset;
+        // }
+        //
+        //
+        // // pas sur c'est quoi
+        // setInterval(ajuste,1000);
+        // for(var i=1;i<25;i++) txt(""+i,i*360/24);
+
+
+        // les ronds de la méteo
+        // var meteoTab = [];
+        // for(var i=0;i<24;i++) meteoTab[i]=meteoDot(i*360/24,"meteoDot"+i);
+        // for(var i=0;i<24;i++) meteoTab[i].setAttribute ("fill","rgb("+(f*255)+",0,"+(255-f*255)+")");
+
+        // couleur dégradé des ronds météo
+        // for(var i=0;i<24;i++) meteoTab[i].setAttribute ("fill","rgb("+(f*255)+",0,"+(255-f*255)+")");
+
+      </script>
+
+    </body>
+
+</html>
